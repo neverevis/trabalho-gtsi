@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arquitetura Proposta – Saúde Prime</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F3EE;
+    --ink: #10263A;
+    --ink-soft: #4A5A6A;
+    --line: #9AA7B3;
+    --azure: #1F5FA8;
+    --azure-bg: #EAF1FA;
+    --vnet: #6B8BB0;
+    --teal: #0E7266;
+    --teal-bg: #E3F2EF;
+    --fabric: #0E7266;
+    --bronze: #8E5424;
+    --bronze-bg: #F4E4D4;
+    --silver: #4F5D6B;
+    --silver-bg: #E5E9ED;
+    --gold: #7A5E08;
+    --gold-bg: #F6EBC2;
+    --card: #FFFFFF;
+    --tf: #5B4BB0;
+    --tf-bg: #ECE9F8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); }
+  body {
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 16px;
+    overflow-x: hidden;
+  }
+  #wrap { width: 1664px; height: 700px; transform-origin: top left; }
+  #canvas { position: relative; width: 1664px; height: 700px; }
+  .box { position: absolute; border-radius: 14px; }
+  .label { font-size: 15px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+  .title { font-size: 21px; font-weight: 700; line-height: 1.2; }
+  .text { font-size: 16px; line-height: 1.35; color: var(--ink-soft); }
+  .src { left: 0; width: 210px; height: 70px; background: var(--card); border: 2px solid var(--line);
+         display: flex; flex-direction: column; justify-content: center; padding: 0 16px; }
+  .src .title { font-size: 18px; }
+  .src .text { font-size: 14px; }
+  .layer { top: 300px; width: 246px; height: 170px; padding: 14px 16px; border: 2px solid; }
+  .layer .title { font-size: 22px; margin-bottom: 6px; }
+  .layer .text { font-size: 15px; color: var(--ink); }
+  .badge { display: inline-flex; align-items: center; gap: 6px; }
+  svg.overlay { position: absolute; inset: 0; pointer-events: none; }
+  .chip { display: inline-block; font-size: 14px; font-weight: 600; padding: 3px 9px; border-radius: 999px;
+          background: var(--teal-bg); color: var(--teal); margin: 3px 4px 0 0; }
+</style>
+</head>
+<body>
+<div id="wrap"><div id="canvas" role="img" aria-label="Arquitetura proposta: ERP, Portal de Guias e CRM enviam dados ao Azure (Brazil South), onde o Databricks processa as camadas Bronze, Prata e Ouro do Data Lake dentro de uma rede privada com Key Vault e Private Endpoints; a camada Ouro alimenta o Microsoft Fabric F64; tudo provisionado via Terraform.">
+
+  <!-- Fontes -->
+  <div class="box label" style="left:0;top:212px;width:210px;color:var(--ink-soft)">Fontes de dados</div>
+  <div class="box src" style="top:250px"><div class="title">ERP Hospitalar</div><div class="text">contas e despesas</div></div>
+  <div class="box src" style="top:335px"><div class="title">Portal de Guias</div><div class="text">autorizações</div></div>
+  <div class="box src" style="top:420px"><div class="title">CRM</div><div class="text">clientes e atendimento</div></div>
+
+  <!-- Azure -->
+  <div class="box" style="left:250px;top:0;width:1000px;height:600px;background:var(--azure-bg);border:2px solid var(--azure)"></div>
+  <div class="box" style="left:270px;top:14px;width:960px;display:flex;justify-content:space-between;align-items:center">
+    <div class="label" style="color:var(--azure)">Microsoft Azure · Região Brazil South (São Paulo)</div>
+    <div class="text" style="font-size:15px;color:var(--azure);font-weight:600">Resource Group: rg-saudeprime-dados</div>
+  </div>
+  <!-- VNet -->
+  <div class="box" style="left:270px;top:50px;width:960px;height:535px;border:2px dashed var(--vnet);border-radius:12px"></div>
+  <div class="box text" style="left:290px;top:60px;font-size:15px;font-weight:600;color:var(--vnet)">VNet privada + sub-redes · sem exposição à internet pública</div>
+
+  <!-- Databricks -->
+  <div class="box" style="left:300px;top:100px;width:900px;height:100px;background:var(--card);border:2px solid #C2410C;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:24px">
+    <div>
+      <div class="title" style="color:#9A3412">Azure Databricks</div>
+      <div class="text">Motor de processamento: ingestão automatizada, limpeza e transformações Bronze → Prata → Ouro</div>
+    </div>
+    <div class="text" style="font-size:14px;text-align:right;white-space:nowrap">Jobs agendados<br>Notebooks de ML</div>
+  </div>
+
+  <!-- Data Lake -->
+  <div class="box" style="left:300px;top:240px;width:900px;height:250px;background:#FBFAF7;border:2px solid var(--line)"></div>
+  <div class="box" style="left:320px;top:252px;width:860px;display:flex;justify-content:space-between">
+    <div class="title" style="font-size:18px">Storage Account · Data Lake (ADLS Gen2)</div>
+    <div class="text" style="font-size:14px">Arquitetura Medalhão</div>
+  </div>
+  <div class="box layer" style="left:330px;background:var(--bronze-bg);border-color:var(--bronze)">
+    <div class="title" style="color:var(--bronze)">Bronze</div>
+    <div class="text">Dados brutos, exatamente como saíram do ERP e do CRM. Histórico para auditoria e reprocessamento.</div>
+  </div>
+  <div class="box layer" style="left:626px;background:var(--silver-bg);border-color:var(--silver)">
+    <div class="title" style="color:var(--silver)">Prata</div>
+    <div class="text">Limpeza, padronização e remoção de duplicados. <b>CPF e nome mascarados (LGPD).</b></div>
+  </div>
+  <div class="box layer" style="left:922px;background:var(--gold-bg);border-color:var(--gold)">
+    <div class="title" style="color:var(--gold)">Ouro</div>
+    <div class="text">Modelos de negócio prontos para consumo. <b>Fonte única da verdade.</b></div>
+  </div>
+
+  <!-- Segurança -->
+  <div class="box" style="left:300px;top:515px;width:320px;height:58px;background:var(--card);border:2px solid var(--ink);padding:0 16px;display:flex;flex-direction:column;justify-content:center">
+    <div class="title" style="font-size:18px">Azure Key Vault</div>
+    <div class="text" style="font-size:14px">senhas, chaves e certificados</div>
+  </div>
+  <div class="box" style="left:640px;top:515px;width:560px;height:58px;background:var(--card);border:2px solid var(--ink);padding:0 16px;display:flex;flex-direction:column;justify-content:center">
+    <div class="title" style="font-size:18px">Private Endpoints</div>
+    <div class="text" style="font-size:14px">acesso privado ao Storage, Key Vault, Databricks e Fabric</div>
+  </div>
+
+  <!-- IA -->
+  <div class="box" style="left:1300px;top:60px;width:364px;height:140px;background:var(--card);border:2px dashed #C2410C;padding:14px 18px">
+    <div class="label" style="color:#9A3412;font-size:13px">Próxima etapa</div>
+    <div class="title" style="font-size:19px;margin:2px 0 4px">IA e Machine Learning</div>
+    <div class="text" style="font-size:15px">Previsão de ocupação de leitos · detecção de fraudes em guias</div>
+  </div>
+
+  <!-- Fabric -->
+  <div class="box" style="left:1300px;top:240px;width:364px;height:360px;background:var(--card);border:2px solid var(--fabric);padding:16px 18px">
+    <div class="title" style="color:var(--teal)">Microsoft Fabric F64</div>
+    <div class="text" style="font-size:15px;margin-bottom:10px">Power BI corporativo · workspaces governados</div>
+    <div class="text" style="color:var(--ink);font-size:15px"><b>Publicação:</b> equipe restrita de ~20 desenvolvedores (licença Pro)</div>
+    <div class="text" style="color:var(--ink);font-size:15px;margin-top:8px"><b>Consumo sem licença individual:</b></div>
+    <div><span class="chip">Diretoria</span><span class="chip">Médicos e auditores</span><span class="chip">Gestores</span><span class="chip">Comercial</span></div>
+    <div class="text" style="font-size:14px;margin-top:10px">Acesso por cargo (RBAC): dado identificado só para quem é autorizado</div>
+    <div class="text" style="font-size:14px;margin-top:10px">Copilot e agentes de IA integrados para perguntas em linguagem natural</div>
+  </div>
+
+  <!-- Terraform -->
+  <div class="box" style="left:0;top:625px;width:1664px;height:75px;background:var(--tf-bg);border:2px solid var(--tf);display:flex;align-items:center;gap:18px;padding:0 22px">
+    <div class="title" style="color:var(--tf);white-space:nowrap">Terraform · Infraestrutura como Código</div>
+    <div class="text" style="color:var(--ink)">Todos os recursos acima são criados, versionados e auditados por código: ambiente documentado e recriável em caso de desastre.</div>
+  </div>
+
+  <!-- Setas -->
+  <svg class="overlay" width="1664" height="700" viewBox="0 0 1664 700" aria-hidden="true">
+    <defs>
+      <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#10263A"/>
+      </marker>
+      <marker id="ahO" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#C2410C"/>
+      </marker>
+    </defs>
+    <g fill="none" stroke="#10263A" stroke-width="2.5">
+      <path d="M210,285 C270,285 270,385 326,385" marker-end="url(#ah)"/>
+      <path d="M210,370 C270,370 270,385 326,385" marker-end="url(#ah)"/>
+      <path d="M210,455 C270,455 270,385 326,385" marker-end="url(#ah)"/>
+      <path d="M576,385 L622,385" marker-end="url(#ah)"/>
+      <path d="M872,385 L918,385" marker-end="url(#ah)"/>
+      <path d="M1168,385 L1296,385" marker-end="url(#ah)"/>
+    </g>
+    <g fill="none" stroke="#C2410C" stroke-width="2.5" stroke-dasharray="7 6">
+      <path d="M601,200 L601,236" marker-end="url(#ahO)"/>
+      <path d="M897,200 L897,236" marker-end="url(#ahO)"/>
+      <path d="M1200,150 L1296,130" marker-end="url(#ahO)"/>
+    </g>
+  </svg>
+</div></div>
+<script>
+  // Escala o diagrama para caber em telas menores
+  function fit() {
+    var w = document.getElementById('wrap');
+    var s = Math.min(1, (window.innerWidth - 32) / 1664);
+    w.style.transform = 'scale(' + s + ')';
+    w.style.width = 1664 * s + 'px';
+    w.style.height = 700 * s + 'px';
+  }
+  window.addEventListener('resize', fit); fit();
+</script>
+</body>
+</html>

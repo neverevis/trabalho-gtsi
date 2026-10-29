@@ -1,0 +1,21 @@
+{
+  "v": 4,
+  "createdOnFiles": {"v": 1, "at": "2026-10-29T12:30:00Z"},
+  "lists": "css",
+  "title": "Saúde Prime – Plano Estratégico de Informatização",
+  "order": ["cover", "agenda", "empresa", "processos", "cenario", "problemas", "risco", "medalhao", "visualizacao", "arquitetura", "seguranca", "terraform", "licenciamento", "custos", "retorno", "payback", "conclusao", "perguntas"],
+  "sections": {
+    "s1": {"description": "Abertura e caracterização da Saúde Prime Araraquara", "start": "cover"},
+    "s2": {"description": "Diagnóstico da situação atual: problemas e riscos", "start": "cenario"},
+    "s3": {"description": "Fundamentação e arquitetura em nuvem proposta", "start": "medalhao"},
+    "s4": {"description": "Custos, justificativa do investimento e retorno no tempo", "start": "licenciamento"},
+    "s5": {"description": "Conclusão e perguntas", "start": "conclusao"}
+  },
+  "cover": "cover",
+  "faces": {
+    "source-serif-4": {"family": "Source Serif 4", "href": "https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400..700&display=swap"},
+    "ibm-plex-sans": {"family": "IBM Plex Sans", "href": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"},
+    "ibm-plex-mono": {"family": "IBM Plex Mono", "href": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap"}
+  },
+  "designSystems": []
+}
